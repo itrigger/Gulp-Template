@@ -21,6 +21,7 @@ var path = {
         js: 'build/js/',
         css: 'build/css/',
         img: 'build/img/',
+        sprite: 'build/css/',
         fonts: 'build/fonts/'
     },
     src: {
@@ -83,7 +84,7 @@ gulp.task('js:build', function () {
 gulp.task('style:build', function () {
     gulp.src(path.src.style)
         .pipe(sourcemaps.init())
-        .pipe(sass())
+        .pipe(sass({errLogToConsole: true}))
         .pipe(prefixer())
         .pipe(cssmin())
         .pipe(sourcemaps.write())
@@ -103,16 +104,20 @@ gulp.task('image:build', function () {
         .pipe(connect.reload());
 });
 
+
+//Этот таск надо запускать отдельно перед главным
 gulp.task('sprite:build', function() {
     var spriteData =
         gulp.src(path.src.sprite) // путь, откуда берем картинки для спрайта
             .pipe(spritesmith({
+                imgPath: '../img/sprite.png', //так будет прописано в css файле
                 imgName: 'sprite.png',
-                cssName: 'sprite.css'
+                cssName: 'sprite.scss',
+                cssFormat: 'css'
             }));
 
     spriteData.img.pipe(gulp.dest(path.build.img)); // путь, куда сохраняем картинку
-    spriteData.css.pipe(gulp.dest(path.build.css)); // путь, куда сохраняем стили
+    spriteData.css.pipe(gulp.dest('src/style/partials/')); // путь, куда сохраняем стили
 });
 
 
@@ -127,8 +132,7 @@ gulp.task('build', [
     'js:build',
     'style:build',
     'fonts:build',
-    'image:build',
-    'sprite:build'
+    'image:build'
 ]);
 
 
@@ -145,9 +149,9 @@ gulp.task('watch', function(){
     watch([path.watch.img], function(event, cb) {
         gulp.start('image:build');
     });
-    watch([path.watch.sprite], function(event, cb) {
+   /* watch([path.watch.sprite], function(event, cb) {
         gulp.start('sprite:build');
-    });
+    });*/
     watch([path.watch.fonts], function(event, cb) {
         gulp.start('fonts:build');
     });

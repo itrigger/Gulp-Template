@@ -2,8 +2,10 @@
 * Third Party
 */
 @import "CSS:../../bower_components/normalize.css/normalize.css";
+//@import "CSS:../../build/css/sprite.css";
 
 /*
 * Custom
 */
+@import "partials/sprite";
 @import "partials/variable";
