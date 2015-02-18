@@ -1,2 +1,2 @@
-# Frontend-devil
-Devil boilerplate for html+js+css apps
+# Frontend-Gulp-Template
+boilerplate for html+js+css apps
